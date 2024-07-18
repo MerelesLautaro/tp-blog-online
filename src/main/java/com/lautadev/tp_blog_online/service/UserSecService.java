@@ -40,19 +40,4 @@ public class UserSecService implements IUserSecService {
         this.saveUser(userSec);
     }
 
-    @Override
-    public void handleOAuth2Login(@AuthenticationPrincipal OidcUser principal) {
-        String email = principal.getAttribute("email");
-        String givenName = principal.getAttribute("given_name");
-        String familyName = principal.getAttribute("family_name");
-
-        Optional<UserSec> existingUser = userSecRepository.findByEmail(email);
-        if (existingUser.isEmpty()) {
-            UserSec newUser = new UserSec();
-            newUser.setEmail(email);
-            newUser.setName(givenName);
-            newUser.setLastname(familyName);
-            this.saveUser(newUser);
-        }
-    }
 }

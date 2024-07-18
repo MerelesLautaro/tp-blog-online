@@ -1,6 +1,9 @@
 package com.lautadev.tp_blog_online.config;
 
 import com.lautadev.tp_blog_online.config.filter.JWTTokenValidator;
+import com.lautadev.tp_blog_online.repository.IUserSecRepository;
+import com.lautadev.tp_blog_online.service.CustomOAuth2UserService;
+import com.lautadev.tp_blog_online.service.IUserSecService;
 import com.lautadev.tp_blog_online.utils.JWTUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -27,6 +30,9 @@ public class SecurityConfig {
 
     @Autowired
     private JWTUtils jwtUtils;
+
+    @Autowired
+    private CustomOAuth2UserService customOAuth2UserService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {

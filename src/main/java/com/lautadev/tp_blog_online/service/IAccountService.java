@@ -12,5 +12,5 @@ public interface IAccountService {
     public void deleteAccount(Long id);
     public void editAccount(Account account);
 
-    //String encriptPassword(String password);
+    String encriptPassword(String password);
 }

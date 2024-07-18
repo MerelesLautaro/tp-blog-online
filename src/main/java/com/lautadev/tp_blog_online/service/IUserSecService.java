@@ -13,6 +13,4 @@ public interface IUserSecService {
     public Optional<UserSec> findUser(Long id);
     public void deleteUser(Long id);
     public void editUser(UserSec userSec);
-
-    void handleOAuth2Login(@AuthenticationPrincipal OidcUser principal);
 }
