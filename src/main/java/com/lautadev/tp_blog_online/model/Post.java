@@ -1,9 +1,6 @@
 package com.lautadev.tp_blog_online.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,10 +14,12 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "postings")
 public class Post {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String content;
     private LocalDate writeDate;
     @ManyToOne
     @JoinColumn(name = "fk_idAuthor")
-    private Long idAuthor;
+    private UserSec idAuthor;
 }
