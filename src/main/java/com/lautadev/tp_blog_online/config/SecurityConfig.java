@@ -1,9 +1,7 @@
 package com.lautadev.tp_blog_online.config;
 
 import com.lautadev.tp_blog_online.config.filter.JWTTokenValidator;
-import com.lautadev.tp_blog_online.repository.IUserSecRepository;
 import com.lautadev.tp_blog_online.service.CustomOAuth2UserService;
-import com.lautadev.tp_blog_online.service.IUserSecService;
 import com.lautadev.tp_blog_online.utils.JWTUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -32,17 +30,24 @@ public class SecurityConfig {
     private JWTUtils jwtUtils;
 
     @Autowired
-    private CustomOAuth2UserService customOAuth2UserService;
+    private CustomOAuth2UserService customOidcUserService;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-        return httpSecurity
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
                 .csrf(csrf -> csrf.disable())
-                .formLogin(Customizer.withDefaults())
-                .oauth2Login(Customizer.withDefaults())
+                .authorizeHttpRequests(authorize -> authorize
+                        .anyRequest().authenticated()
+                )
+                .oauth2Login(oauth2 -> oauth2
+                        .userInfoEndpoint(userInfoEndpointConfig ->
+                                userInfoEndpointConfig.oidcUserService(customOidcUserService)
+                        )
+                )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(new JWTTokenValidator(jwtUtils),  BasicAuthenticationFilter.class)
-                .build();
+                .addFilterBefore(new JWTTokenValidator(jwtUtils), BasicAuthenticationFilter.class);
+
+        return http.build();
     }
 
     @Bean
